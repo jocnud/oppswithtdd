@@ -22,7 +22,9 @@ public class LinkController {
 	@GetMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public Link shortenURL(@RequestParam("fullURL") String fullURL) {
-		return urlShortner.shorten(fullURL);
+		Link link = urlShortner.shorten(fullURL);
+		link.setShortURL("http://shtddopp.herokuapp.com/redirect/"+link.getShortURL());
+		return link;
 	}
 
 	@GetMapping("/expand")
