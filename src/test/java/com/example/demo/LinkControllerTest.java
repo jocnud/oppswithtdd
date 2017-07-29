@@ -37,15 +37,13 @@ public class LinkControllerTest {
 
 		// Arrange
 		when(urlShortner.shorten(anyString())).thenReturn(mockLink);
-		
-		//Action
-		ResultActions result = mockmvc.perform(get("/shorten").param("fullURL", FULL_URL) );
-		
-		//Assert
-		result.andExpect(status().isCreated())
-			  .andExpect(jsonPath("short_url").value(SHORT_URL))
-			  .andExpect(jsonPath("full_url").value(FULL_URL));
-			  
+
+		// Action
+		ResultActions result = mockmvc.perform(get("/").param("fullURL", FULL_URL));
+
+		// Assert
+		result.andExpect(status().isCreated()).andExpect(jsonPath("short_url").value(SHORT_URL))
+				.andExpect(jsonPath("full_url").value(FULL_URL));
 
 	}
 }

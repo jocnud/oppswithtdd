@@ -17,7 +17,7 @@ public class LinkController {
 		this.urlShortner = urlShortner;
 	}
 
-	@GetMapping("/shorten")
+	@GetMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public Link shortenURL(@RequestParam("fullURL") String fullURL) {
 		return urlShortner.shorten(fullURL);
