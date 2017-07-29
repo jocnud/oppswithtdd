@@ -20,4 +20,8 @@ public class LinkRepository {
 		links.add(link);
 	}
 
+	public Link findByShortURL(String shortUrl) {
+		return links.stream().filter(l -> l.getShortURL().equals(shortUrl)).findAny().orElse(null);
+	}
+
 }

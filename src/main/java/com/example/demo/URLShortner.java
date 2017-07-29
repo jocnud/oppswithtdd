@@ -23,10 +23,15 @@ public class URLShortner {
 
 		if (link == null) {
 			String shortenURL = Hashing.murmur3_32().hashString(fullURL, StandardCharsets.UTF_8).toString();
-			link = new Link("http://my.ly/" + shortenURL, fullURL);
+			link = new Link("https://shtddopp.herokuapp.com/redirect/" + shortenURL, fullURL);
 			linkRepository.save(link);
 		}
 		return link;
 	}
+
+	public Link expandURL(String shortUrl) {
+		return linkRepository.findByShortURL(shortUrl);
+	}
+
 
 }

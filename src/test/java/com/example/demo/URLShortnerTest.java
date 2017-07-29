@@ -35,7 +35,7 @@ public class URLShortnerTest {
 
 		when(linkRespository.findByFullURL(anyString())).thenReturn(null);
 
-		Link link = urlShortner.shorten("http://someverylongurl.com");
+		Link link = urlShortner.shorten(FULL_URL);
 
 		verify(linkRespository).findByFullURL(anyString());
 		verify(linkRespository).save(link);
@@ -43,7 +43,7 @@ public class URLShortnerTest {
 	}
 
 	@Test
-	public void returnShortenURL_whenURLFound() {
+	public void returnShortenURL_whenFullURLFound() {
 		when(linkRespository.findByFullURL(anyString())).thenReturn(link);
 
 		Link link = urlShortner.shorten(FULL_URL);
@@ -52,5 +52,19 @@ public class URLShortnerTest {
 		verify(linkRespository).findByFullURL(FULL_URL);
 
 	}
+	
+	@Test
+	public void returnFullURL_whenShortURLFound(){
+		
+		when(linkRespository.findByShortURL(SHORT_URL)).thenReturn(link);
+	
+		Link link = urlShortner.expandURL(SHORT_URL);
+		assertThat(link.getFullURL().equals(FULL_URL));
+		
+		verify(linkRespository).findByShortURL(SHORT_URL);
+		 
+		
+	}
+	
 
 }
