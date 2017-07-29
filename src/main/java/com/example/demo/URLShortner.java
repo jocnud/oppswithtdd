@@ -23,7 +23,7 @@ public class URLShortner {
 
 		if (link == null) {
 			String shortenURL = Hashing.murmur3_32().hashString(fullURL, StandardCharsets.UTF_8).toString();
-			link = new Link("https://shtddopp.herokuapp.com/redirect/" + shortenURL, fullURL);
+			link = new Link("http://shtddopp.herokuapp.com/redirect/" + shortenURL, fullURL);
 			linkRepository.save(link);
 		}
 		return link;
