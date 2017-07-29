@@ -22,9 +22,7 @@ public class LinkControllerTest {
 	private static final String SHORT_URL = "abc123";
 	private static final String FULL_URL = "http://www.averylongurl.com";
 	private Link mockLink = new Link(SHORT_URL, FULL_URL);
-
-	@Autowired
-	private LinkController linkController;
+	private static final String prependUrl="http://localhost:8080/";
 
 	@Autowired
 	private MockMvc mockmvc;
@@ -37,10 +35,10 @@ public class LinkControllerTest {
 
 		when(urlShortner.shorten(anyString())).thenReturn(mockLink);
 
-		ResultActions result = mockmvc.perform(get("/").param("fullURL", FULL_URL));
+		ResultActions result = mockmvc.perform(get("/shorten").param("fullURL", FULL_URL));
 
 		result.andExpect(status().isCreated())
-				.andExpect(jsonPath("short_url").value(SHORT_URL))
+				.andExpect(jsonPath("short_url").value(prependUrl+SHORT_URL))
 				.andExpect(jsonPath("full_url").value(FULL_URL));
 
 	}
@@ -53,7 +51,7 @@ public class LinkControllerTest {
 		ResultActions result = mockmvc.perform(get("/expand").param("shortURL", SHORT_URL));
 
 		result.andExpect(status().isOk())
-				.andExpect(jsonPath("short_url").value(SHORT_URL))
+				.andExpect(jsonPath("short_url").value(prependUrl+SHORT_URL))
 				.andExpect(jsonPath("full_url").value(FULL_URL));
 	}
 }
