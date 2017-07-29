@@ -1,9 +1,14 @@
 package com.example.demo;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,10 +26,11 @@ public class LinkController {
 
 	@GetMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Link shortenURL(@RequestParam("fullURL") String fullURL) {
+	public Object shortenURL(@RequestParam("fullURL") String fullURL) {
 		Link link = urlShortner.shorten(fullURL);
-		link.setShortURL("http://shtddopp.herokuapp.com/redirect/"+link.getShortURL());
-		return link;
+		// link.setShortURL("http:/localhost:8080/redirect/" +
+		// link.getShortURL());
+		return "http://shtddopp.herokuapp.com/foo/" + link.getShortURL();
 	}
 
 	@GetMapping("/expand")
@@ -37,8 +43,12 @@ public class LinkController {
 	@GetMapping("/redirect/{shortURL}")
 	@ResponseStatus(value = HttpStatus.OK)
 	RedirectView redirectToFull(@PathVariable String shortURL) {
-		
-		return new RedirectView(urlShortner.expandURL(shortURL).getFullURL());
+		return new RedirectView("http://google.com");
+	}
+
+	@RequestMapping("/foo/{shortURL}")
+	void handleFoo(HttpServletResponse response ,@PathVariable String shortURL) throws IOException {
+		response.sendRedirect(urlShortner.expandURL(shortURL).getFullURL());
 	}
 
 }
